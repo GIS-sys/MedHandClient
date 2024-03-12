@@ -38,9 +38,6 @@ ENV WINEPREFIX /wine
 ENV DISPLAY :0
 RUN set -x \
     && echo 'Xvfb $DISPLAY -screen 0 1024x768x24 &' >> /root/.bashrc
-# RUN set -x \
-#     && ( Xvfb :0 -screen 0 1024x768x16 & ) \
-#     && sleep 5
 
 # windows 10 environment
 RUN set -x \
@@ -78,17 +75,6 @@ ENV W_WINDIR_UNIX="$W_DRIVE_C/windows"
 ENV W_SYSTEM64_DLLS="$W_WINDIR_UNIX/system32"
 ENV W_TMP="$W_DRIVE_C/windows/temp/_$0"
 
-# install Microsoft Visual C++ Redistributable for Visual Studio 2015, 2017 and 2019 dll files
-#RUN set -x \
-#    && rm -f "$W_TMP"/* \
-#    && wget -P "$W_TMP" https://aka.ms/vs/16/release/vc_redist.x64.exe \
-#    && cabextract -q --directory="$W_TMP" "$W_TMP"/vc_redist.x64.exe \
-#    && cabextract -q --directory="$W_TMP" "$W_TMP/a10" \
-#    && cabextract -q --directory="$W_TMP" "$W_TMP/a11" \
-#    && cd "$W_TMP" \
-#    && rename 's/_/\-/g' *.dll \
-#    && cp "$W_TMP"/*.dll "$W_SYSTEM64_DLLS"/
-
 # install pyinstaller
 RUN /usr/bin/pip install pyinstaller==$PYINSTALLER_VERSION
 
@@ -98,9 +84,6 @@ VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
 
-COPY compilation/run.sh ./
+COPY compilation/entrypoint.sh ./
 ENTRYPOINT ["/bin/bash"]
-CMD ["./run.sh"]
-#COPY entrypoint-windows.sh /entrypoint.sh
-#RUN chmod +x /entrypoint.sh
-#ENTRYPOINT ["/entrypoint.sh"]
+CMD ["./entrypoint.sh"]
