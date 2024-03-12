@@ -1,0 +1,6 @@
+FROM wine_python
+WORKDIR /wine/drive_c/src/
+
+COPY compilation/entrypoint.sh ./
+ENTRYPOINT ["/bin/bash"]
+CMD ["./entrypoint.sh"]

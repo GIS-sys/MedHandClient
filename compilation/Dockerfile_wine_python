@@ -1,12 +1,12 @@
 FROM ubuntu:20.04
 
-ENV DEBIAN_FRONTEND noninteractive
-
 ARG WINE_VERSION=winehq-stable
 ARG PYTHON_VERSION=3.11.5
 ARG PYINSTALLER_VERSION=6.5.0
+ARG PYTHON_DIR=Python311
 
-ENV PYTHON_DIR Python311
+ENV DEBIAN_FRONTEND noninteractive
+ENV PYTHON_DIR $PYTHON_DIR
 
 # we need wine for this to work, so we'll use the PPA
 RUN set -x \
@@ -81,9 +81,4 @@ RUN /usr/bin/pip install pyinstaller==$PYINSTALLER_VERSION
 # put the src folder inside wine
 RUN mkdir /src/ && ln -s /src /wine/drive_c/src
 VOLUME /src/
-WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
-
-COPY compilation/entrypoint.sh ./
-ENTRYPOINT ["/bin/bash"]
-CMD ["./entrypoint.sh"]
