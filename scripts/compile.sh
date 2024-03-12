@@ -1,2 +1,1 @@
-cd compilation
-docker build -t dockerwine2 .. && docker run -it dockerwine2
+docker build -t dockerwine2 -f compilation/Dockerfile . && docker run -it dockerwine2
