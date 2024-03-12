@@ -4,8 +4,9 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ARG WINE_VERSION=winehq-stable
 ARG PYTHON_VERSION=3.11.5
-ARG PYTHON_DIR=Python311
 ARG PYINSTALLER_VERSION=6.5.0
+
+ENV PYTHON_DIR Python311
 
 # we need wine for this to work, so we'll use the PPA
 RUN set -x \
@@ -33,25 +34,6 @@ ENV WINEARCH win64
 ENV WINEDEBUG fixme-all
 ENV WINEPREFIX /wine
 
-### The following didn't work as expected. Left them here for future reference
-
-# xvfb settings
-# ENV DISPLAY :0
-# RUN set -x \
-#     && echo 'export DISPLAY=:0' >> /root/.bashrc \
-#     && echo 'Xvfb $DISPLAY -screen 0 1024x768x24 &' >> /root/.bashrc
-# RUN set -x \
-#     && ( Xvfb :0 -screen 0 1024x768x16 & ) \
-#     && sleep 5
-
-# default for X Virtual Frame Buffer
-# ARG DISPLAY=:99
-# ENV DISPLAY=${DISPLAY}
-# RUN echo "DISPLAY: ${DISPLAY}"
-
-# RUN set -x \
-#     && ( Xvfb :99 & )
-
 # xvfb settings
 ENV DISPLAY :0
 RUN set -x \
@@ -75,17 +57,17 @@ ENV PYPI_INDEX_URL=https://pypi.python.org/simple
 RUN set -x \
     && for msifile in `echo core dev exe lib path pip tcltk tools`; do \
         wget -nv "https://www.python.org/ftp/python/$PYTHON_VERSION/amd64/${msifile}.msi"; \
-        wine msiexec /i "${msifile}.msi" /qb TARGETDIR=C:/Python311; \
+        wine msiexec /i "${msifile}.msi" /qb TARGETDIR=C:/$PYTHON_DIR; \
         rm ${msifile}.msi; \
     done \
-    && cd /wine/drive_c/Python311 \
-    && echo 'wine '\''C:\Python311\python.exe'\'' "$@"' > /usr/bin/python \
-    && echo 'wine '\''C:\Python311\Scripts\easy_install.exe'\'' "$@"' > /usr/bin/easy_install \
-    && echo 'wine '\''C:\Python311\Scripts\pip.exe'\'' "$@"' > /usr/bin/pip \
-    && echo 'wine '\''C:\Python311\Scripts\pyinstaller.exe'\'' "$@"' > /usr/bin/pyinstaller \
-    && echo 'wine '\''C:\Python311\Scripts\pyupdater.exe'\'' "$@"' > /usr/bin/pyupdater \
+    && cd /wine/drive_c/$PYTHON_DIR \
+    && echo 'wine '\''C:\'$PYTHON_DIR'\python.exe'\'' "$@"' > /usr/bin/python \
+    && echo 'wine '\''C:\'$PYTHON_DIR'\Scripts\easy_install.exe'\'' "$@"' > /usr/bin/easy_install \
+    && echo 'wine '\''C:\'$PYTHON_DIR'\Scripts\pip.exe'\'' "$@"' > /usr/bin/pip \
+    && echo 'wine '\''C:\'$PYTHON_DIR'\Scripts\pyinstaller.exe'\'' "$@"' > /usr/bin/pyinstaller \
+    && echo 'wine '\''C:\'$PYTHON_DIR'\Scripts\pyupdater.exe'\'' "$@"' > /usr/bin/pyupdater \
     && echo 'assoc .py=PythonScript' | wine cmd \
-    && echo 'ftype PythonScript=c:\Python311\python.exe "%1" %*' | wine cmd \
+    && echo 'ftype PythonScript=c:\'$PYTHON_DIR'\python.exe "%1" %*' | wine cmd \
     && while pgrep wineserver >/dev/null; do echo "Waiting for wineserver"; sleep 1; done \
     && chmod +x /usr/bin/python /usr/bin/easy_install /usr/bin/pip /usr/bin/pyinstaller /usr/bin/pyupdater \
     && (pip install -U pip || true) \
