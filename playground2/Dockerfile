@@ -75,17 +75,17 @@ ENV PYPI_INDEX_URL=https://pypi.python.org/simple
 RUN set -x \
     && for msifile in `echo core dev exe lib path pip tcltk tools`; do \
         wget -nv "https://www.python.org/ftp/python/$PYTHON_VERSION/amd64/${msifile}.msi"; \
-        wine msiexec /i "${msifile}.msi" /qb TARGETDIR=C:/$PYTHON_DIR; \
+        wine msiexec /i "${msifile}.msi" /qb TARGETDIR=C:/Python311; \
         rm ${msifile}.msi; \
     done \
-    && cd /wine/drive_c/$PYTHON_DIR \
-    && echo 'wine '\''C:\$PYTHON_DIR\python.exe'\'' "$@"' > /usr/bin/python \
-    && echo 'wine '\''C:\$PYTHON_DIR\Scripts\easy_install.exe'\'' "$@"' > /usr/bin/easy_install \
-    && echo 'wine '\''C:\$PYTHON_DIR\Scripts\pip.exe'\'' "$@"' > /usr/bin/pip \
-    && echo 'wine '\''C:\$PYTHON_DIR\Scripts\pyinstaller.exe'\'' "$@"' > /usr/bin/pyinstaller \
-    && echo 'wine '\''C:\$PYTHON_DIR\Scripts\pyupdater.exe'\'' "$@"' > /usr/bin/pyupdater \
+    && cd /wine/drive_c/Python311 \
+    && echo 'wine '\''C:\Python311\python.exe'\'' "$@"' > /usr/bin/python \
+    && echo 'wine '\''C:\Python311\Scripts\easy_install.exe'\'' "$@"' > /usr/bin/easy_install \
+    && echo 'wine '\''C:\Python311\Scripts\pip.exe'\'' "$@"' > /usr/bin/pip \
+    && echo 'wine '\''C:\Python311\Scripts\pyinstaller.exe'\'' "$@"' > /usr/bin/pyinstaller \
+    && echo 'wine '\''C:\Python311\Scripts\pyupdater.exe'\'' "$@"' > /usr/bin/pyupdater \
     && echo 'assoc .py=PythonScript' | wine cmd \
-    && echo 'ftype PythonScript=c:\$PYTHON_DIR\python.exe "%1" %*' | wine cmd \
+    && echo 'ftype PythonScript=c:\Python311\python.exe "%1" %*' | wine cmd \
     && while pgrep wineserver >/dev/null; do echo "Waiting for wineserver"; sleep 1; done \
     && chmod +x /usr/bin/python /usr/bin/easy_install /usr/bin/pip /usr/bin/pyinstaller /usr/bin/pyupdater \
     && (pip install -U pip || true) \
@@ -116,7 +116,7 @@ VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
 
-COPY run.sh /
+COPY run.sh ./
 ENTRYPOINT ["/bin/bash"]
 CMD ["./run.sh"]
 #COPY entrypoint-windows.sh /entrypoint.sh
