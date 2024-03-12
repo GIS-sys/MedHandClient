@@ -98,7 +98,7 @@ VOLUME /src/
 WORKDIR /wine/drive_c/src/
 RUN mkdir -p /wine/drive_c/tmp
 
-COPY run.sh ./
+COPY compilation/run.sh ./
 ENTRYPOINT ["/bin/bash"]
 CMD ["./run.sh"]
 #COPY entrypoint-windows.sh /entrypoint.sh

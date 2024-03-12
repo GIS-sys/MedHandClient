@@ -1,3 +1,0 @@
-cd /home/gordei/.wine/drive_c/users/gordei/Temp
-wine pyinstaller --hidden-import uvicorn C:/users/gordei/Temp/main.py
-wine dist/main/main.exe
