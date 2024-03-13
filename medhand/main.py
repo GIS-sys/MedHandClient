@@ -34,7 +34,7 @@ async def set_position(data: Position):
 # run
 
 def serve():
-    uvicorn.run(webapp, port=PORT)
+    uvicorn.run(webapp, host="0.0.0.0", port=PORT)
 
 if __name__ == "__main__":
     serve()
