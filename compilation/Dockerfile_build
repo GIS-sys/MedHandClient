@@ -1,6 +1,10 @@
 FROM wine_python
 WORKDIR /wine/drive_c/src/
 
-COPY compilation/entrypoint.sh ./
-ENTRYPOINT ["/bin/bash"]
-CMD ["./entrypoint.sh"]
+COPY requirements.txt ./
+RUN wine pip install -r requirements.txt
+
+COPY medhand/ medhand/
+RUN cd medhand && wine pyinstaller --hidden-import uvicorn C:/src/medhand/main.py
+
+CMD ["wine", "medhand/dist/main/main.exe"]
