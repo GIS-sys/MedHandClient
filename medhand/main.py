@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import mouse
 from pydantic import BaseModel
 import uvicorn
 
@@ -29,6 +30,7 @@ class Position(BaseModel):
 async def set_position(data: Position):
     x, y, z = data.x, data.y, data.z
     print(f"Received position values - " + prettify(x, y, z))
+    mouse.move(x, y, duration=0)
     return {"x": x, "y": y, "z": z}
 
 # run
