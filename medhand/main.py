@@ -6,6 +6,12 @@ import uvicorn
 
 from utils import prettify
 
+# DEBUG
+print(mouse.__dir__())
+print(mouse.get_position())
+mouse.move(0, 0)
+# DEBUG
+
 PORT = 8080
 
 # init website
