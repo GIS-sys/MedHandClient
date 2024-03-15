@@ -24,16 +24,18 @@ jobs:
     - name: Build Ubuntu
       run: |
         ./compilation/compile_ubuntu.sh
-        # ./compilation/compile_wine.sh
+    #    ./compilation/compile_wine.sh
 
     - name: Upload Ubuntu artifact
       uses: actions/upload-artifact@v4
       with:
         name: ubuntu_artifact.zip
         path: target/target_ubuntu.zip
+        retention-days: 7
 
-    # - name: Upload Wine artifact
-    #   uses: actions/upload-artifact@v4
-    #   with:
-    #     name: wine_artifact.zip
-    #     path: target/target_wine.zip
+    #- name: Upload Wine artifact
+    #  uses: actions/upload-artifact@v4
+    #  with:
+    #    name: wine_artifact.zip
+    #    path: target/target_wine.zip
+    #    retention-days: 7
