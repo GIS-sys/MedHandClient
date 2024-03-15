@@ -24,8 +24,6 @@ jobs:
     - name: Build Ubuntu
       run: |
         ./compilation/compile_ubuntu.sh
-
-
         # ./compilation/compile_wine.sh
 
     - name: Upload Ubuntu artifact
