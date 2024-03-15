@@ -1,6 +1,6 @@
 import mouse
 
-from action import Action
+from action import ActionMoveDelta
 
 
 class Controller:
@@ -17,10 +17,10 @@ class Controller:
     def decideAction(data):
         print(Controller.history)
         x, y, z = data.x, data.y, data.z
-        return Action(Action.MOVE, dx=x, dy=y)
+        return ActionMoveDelta(dx=x, dy=y)
 
     @staticmethod
     def takeAction(action):
         print(action)
-        if action.kind == Action.MOVE:
+        if isinstance(action, ActionMoveDelta):
             mouse.move(action.dx, action.dy, duration=0, absolute=False)

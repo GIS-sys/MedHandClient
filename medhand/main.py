@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 from controller import Controller
-from position import Position
+from request_data import RequestData
 
 
 PORT = 8080
@@ -19,8 +19,8 @@ webapp.add_middleware(
     allow_headers=['*'],
 )
 
-@webapp.post("/position")
-async def set_position(data: Position):
+@webapp.post("/new_data")
+async def new_data(data: RequestData):
     Controller.process(data)
 
 if __name__ == "__main__":

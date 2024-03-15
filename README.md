@@ -19,12 +19,12 @@ python medhand/main.py
 
 1) either bash:
 ```bash
-curl -X POST http://localhost:8080/position -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"x": 1, "y": 2, "z": 4}'
+curl -X POST http://localhost:8080/new_data -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"x": 1, "y": 2, "z": 4}'
 ```
 
 2) or JS:
 ```
-fetch("http://localhost:8080/position", {method: "POST", body: '{"x":100,"y":2000,"z":4}', headers: {
+fetch("http://localhost:8080/new_data", {method: "POST", body: '{"x":100,"y":2000,"z":4}', headers: {
   "Content-type": "application/json; charset=UTF-8"
 }}).then((json) => console.log(json));
 ```

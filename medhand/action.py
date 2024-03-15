@@ -1,17 +1,13 @@
-class Action:
-    MOVE = "MOVE"
+from abc import ABC
 
-    def __init__(self, kind, *args, **kwargs):
-        self.kind = kind
-        self.fields = []
-        if kind == Action.MOVE:
-            self.dx = kwargs["dx"]
-            self.dy = kwargs["dy"]
-            self.fields = ["dx", "dy"]
+
+class Action(ABC):
+    pass
+
+class ActionMoveDelta(Action):
+    def __init__(self, dx, dy):
+        self.dx = dx
+        self.dy = dy
 
     def __repr__(self):
-        res = f"Action{self.kind}("
-        for k in self.fields:
-            res += f"{k}={getattr(self, k)},"
-        res += ")"
-        return res
+        return f"ActionMoveDelta(dx={self.dx}, dy={self.dy})"
