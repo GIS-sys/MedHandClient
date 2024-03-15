@@ -15,14 +15,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - uses: satackey/action-docker-layer-caching@v0.0.11
-      # Ignore the failure of a step and avoid terminating the job.
-      continue-on-error: true
-
     - name: Build Ubuntu
       run: |
         ./compilation/compile_ubuntu.sh
-    #    ./compilation/compile_wine.sh
+        ./compilation/compile_wine.sh
 
     - name: Upload Ubuntu artifact
       uses: actions/upload-artifact@v4
@@ -31,9 +27,9 @@ jobs:
         path: target/target_ubuntu.zip
         retention-days: 7
 
-    #- name: Upload Wine artifact
-    #  uses: actions/upload-artifact@v4
-    #  with:
-    #    name: wine_artifact.zip
-    #    path: target/target_wine.zip
-    #    retention-days: 7
+    - name: Upload Wine artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: wine_artifact.zip
+        path: target/target_wine.zip
+        retention-days: 7
