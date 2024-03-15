@@ -15,11 +15,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Cache Docker directory
-      uses: actions/cache@v4
-      with:
-        path: /var/lib/docker
-        key: docker-ubuntu-build
+    - uses: satackey/action-docker-layer-caching@v0.0.11
+      # Ignore the failure of a step and avoid terminating the job.
+      continue-on-error: true
 
     - name: Build Ubuntu
       run: |
@@ -32,9 +30,6 @@ jobs:
         name: ubuntu_artifact.zip
         path: target/target_ubuntu.zip
         retention-days: 7
-
-    - name: Allow access to Docker directory
-      run: sudo chown -R 1001:1001 /var/lib/docker
 
     #- name: Upload Wine artifact
     #  uses: actions/upload-artifact@v4
