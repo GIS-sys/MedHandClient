@@ -22,7 +22,7 @@ jobs:
         key: docker-ubuntu-build
 
     - name: Allow access to Docker directory
-      run: chown -R 1001:1001 /var/lib/docker
+      run: sudo chown -R 1001:1001 /var/lib/docker
 
     - name: Build Ubuntu
       run: |
