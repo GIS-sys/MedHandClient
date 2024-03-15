@@ -1,3 +1,5 @@
+#!/bin/bash
+cd "$(dirname "$0")"/..
 # build
 docker build -t wine_pyinstaller -f compilation/wine.pyinstaller.Dockerfile . && \
 docker build -t wine_medhand_build -f compilation/wine.build.Dockerfile . && \

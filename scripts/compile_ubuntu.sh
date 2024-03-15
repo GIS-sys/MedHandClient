@@ -1,3 +1,5 @@
+#!/bin/bash
+cd "$(dirname "$0")"/..
 # build
 docker build -t ubuntu_pyinstaller -f compilation/ubuntu.pyinstaller.Dockerfile . && \
 docker build -t ubuntu_medhand_build -f compilation/ubuntu.build.Dockerfile . && \
