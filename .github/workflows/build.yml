@@ -15,11 +15,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-     - name: Cache Docker directory
-       uses: actions/cache@v2
-       with:
-         path: /var/lib/docker
-         key: docker-{{ runner.os }}-{{ hashFiles('**/Dockerfile') }}
+    - name: Cache Docker directory
+      uses: actions/cache@v2
+      with:
+        path: /var/lib/docker
+        key: docker-{{ runner.os }}-{{ hashFiles('**/Dockerfile') }}
 
     - name: Build Ubuntu
       run: |
