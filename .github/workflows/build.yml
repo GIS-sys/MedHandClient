@@ -1,0 +1,39 @@
+name: Build and Upload Artifacts
+
+on:
+  pull_request:
+    paths:
+      - 'medhand/**'
+      - 'requirements.txt'
+      - 'compilation/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # - name: Cache Docker directory
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: /var/lib/docker
+    #     key: docker-{{ runner.os }}-{{ hashFiles('**/Dockerfile') }}
+
+    - name: Build
+      run: |
+        ./compilation/compile_ubuntu.sh
+        # ./compilation/compile_wine.sh
+
+    - name: Upload Ubuntu artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ubuntu_artifact.zip
+        path: target/target_ubuntu.zip
+
+    # - name: Upload Wine artifact
+    #   uses: actions/upload-artifact@v3
+    #   with:
+    #     name: wine_artifact.zip
+    #     path: target/target_wine.zip
