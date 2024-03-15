@@ -24,6 +24,14 @@ class ActionClick(Action):
     def __repr__(self):
         return f"ActionClick(x={self.x}, y={self.y}, button={button_name(self.right)})"
 
+class ActionPressRelease(Action):
+    def __init__(self, pos, release=False, right=False):
+        self.x, self.y = pos
+        self.release = release
+        self.right = right
+
+    def __repr__(self):
+        return f"ActionPressRelease(x={self.x}, y={self.y}, release={self.release}, right={self.right})"
 
 #class ActionClickRMB(Action):
 #    def __init__(self, dx, dy):

@@ -1,7 +1,7 @@
 import mouse
 import time
 
-from action import ActionClick, ActionMove
+from action import *
 from utils import add, button_name
 
 
@@ -24,7 +24,8 @@ class Controller:
         x, y, z = data.x, data.y, data.z
         cur_mouse_pos = mouse.get_position()
         #return ActionMove(pos=add(cur_mouse_pos, (x, y)))
-        return ActionClick(pos=add(cur_mouse_pos, (x, y)), right=True)
+        #return ActionClick(pos=add(cur_mouse_pos, (x, y)), right=True)
+        return ActionPressRelease(pos=add(cur_mouse_pos, (x, y)), release=False, right=False)
 
     @staticmethod
     def take_action(action):
@@ -32,6 +33,12 @@ class Controller:
         print(action)
         if isinstance(action, ActionMove):
             mouse.move(action.x, action.y, duration=0, absolute=True)
+        elif isinstance(action, ActionPressRelease):
+            mouse.move(action.x, action.y, duration=0, absolute=True)
+            if action.release:
+                mouse.release(button=button_name(action.right))
+            else:
+                mouse.press(button=button_name(action.right))
         elif isinstance(action, ActionClick):
             mouse.move(action.x, action.y, duration=0, absolute=True)
             mouse.press(button=button_name(action.right))
