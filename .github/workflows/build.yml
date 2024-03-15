@@ -21,9 +21,6 @@ jobs:
         path: /var/lib/docker
         key: docker-ubuntu-build
 
-    - name: Allow access to Docker directory
-      run: sudo chown -R 1001:1001 /var/lib/docker
-
     - name: Build Ubuntu
       run: |
         ./compilation/compile_ubuntu.sh
@@ -35,6 +32,9 @@ jobs:
         name: ubuntu_artifact.zip
         path: target/target_ubuntu.zip
         retention-days: 7
+
+    - name: Allow access to Docker directory
+      run: sudo chown -R 1001:1001 /var/lib/docker
 
     #- name: Upload Wine artifact
     #  uses: actions/upload-artifact@v4
