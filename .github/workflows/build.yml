@@ -13,27 +13,29 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
-    # - name: Cache Docker directory
-    #   uses: actions/cache@v2
-    #   with:
-    #     path: /var/lib/docker
-    #     key: docker-{{ runner.os }}-{{ hashFiles('**/Dockerfile') }}
+     - name: Cache Docker directory
+       uses: actions/cache@v2
+       with:
+         path: /var/lib/docker
+         key: docker-{{ runner.os }}-{{ hashFiles('**/Dockerfile') }}
 
-    - name: Build
+    - name: Build Ubuntu
       run: |
         ./compilation/compile_ubuntu.sh
+
+
         # ./compilation/compile_wine.sh
 
     - name: Upload Ubuntu artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ubuntu_artifact.zip
         path: target/target_ubuntu.zip
 
     # - name: Upload Wine artifact
-    #   uses: actions/upload-artifact@v3
+    #   uses: actions/upload-artifact@v4
     #   with:
     #     name: wine_artifact.zip
     #     path: target/target_wine.zip
