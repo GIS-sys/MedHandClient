@@ -1,4 +1,4 @@
-FROM wine_python
+FROM wine_pyinstaller
 WORKDIR /wine/drive_c/src/
 
 COPY requirements.txt ./
