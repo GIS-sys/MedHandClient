@@ -1,0 +1,27 @@
+name: Build Wine
+
+on:
+  pull_request:
+    paths:
+      - 'medhand/**'
+      - 'requirements.txt'
+      - 'compilation/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Wine
+      run: |
+        ./compilation/compile_wine.sh
+
+    - name: Upload Wine artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: wine_artifact.zip
+        path: target/target_wine.zip
+        retention-days: 7
