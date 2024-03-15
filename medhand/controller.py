@@ -23,9 +23,13 @@ class Controller:
         #print(Controller.history)
         x, y, z = data.x, data.y, data.z
         cur_mouse_pos = mouse.get_position()
-        #return ActionMove(pos=add(cur_mouse_pos, (x, y)))
-        #return ActionClick(pos=add(cur_mouse_pos, (x, y)), right=True)
-        return ActionPressRelease(pos=add(cur_mouse_pos, (x, y)), release=False, right=False)
+        if z == 1:
+            return ActionMove(pos=add(cur_mouse_pos, (x, y)))
+        if z == 2:
+            return ActionClick(pos=add(cur_mouse_pos, (x, y)), right=True)
+        if z == 3:
+            return ActionPressRelease(pos=add(cur_mouse_pos, (x, y)), release=False, right=False) #TODO
+        return ActionScroll(pos=add(cur_mouse_pos, (x, y)), scroll=z) # TODO
 
     @staticmethod
     def take_action(action):
@@ -39,6 +43,9 @@ class Controller:
                 mouse.release(button=button_name(action.right))
             else:
                 mouse.press(button=button_name(action.right))
+        elif isinstance(action, ActionScroll):
+            mouse.move(action.x, action.y, duration=0, absolute=True)
+            mouse.wheel(action.scroll)
         elif isinstance(action, ActionClick):
             mouse.move(action.x, action.y, duration=0, absolute=True)
             mouse.press(button=button_name(action.right))

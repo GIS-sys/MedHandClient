@@ -33,20 +33,10 @@ class ActionPressRelease(Action):
     def __repr__(self):
         return f"ActionPressRelease(x={self.x}, y={self.y}, release={self.release}, right={self.right})"
 
-#class ActionClickRMB(Action):
-#    def __init__(self, dx, dy):
-#        self.dx = dx
-#        self.dy = dy
-#
-#    def __repr__(self):
-#        return f"ActionMoveDelta(dx={self.dx}, dy={self.dy})"
-#
-#class ActionMoveDelta(Action):
-#    def __init__(self, dx, dy):
-#        self.dx = dx
-#        self.dy = dy
-#
-#    def __repr__(self):
-#        return f"ActionMoveDelta(dx={self.dx}, dy={self.dy})"
-#
-#
+class ActionScroll(Action):
+    def __init__(self, pos, scroll):
+        self.x, self.y = pos
+        self.scroll = scroll
+
+    def __repr__(self):
+        return f"ActionScroll(x={self.x}, y={self.y}, scroll={self.scroll})"
