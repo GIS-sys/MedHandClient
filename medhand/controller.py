@@ -16,10 +16,10 @@ class Controller:
 
     @staticmethod
     def decide_actions(data):
-        # TODO
-        #print(Controller.history)
         x, y, z = data.x, data.y, data.z
         cur_mouse_pos = Action.get_position()
+        # TODO
+        print(Controller.history)
         print(f"{cur_mouse_pos=}")
         if z == 1:
             return [ActionMove(pos=add(cur_mouse_pos, (x, y)))]
