@@ -1,11 +1,15 @@
 import os
 from pathlib import Path
 import requests
+from requests_futures.sessions import FuturesSession
+import time
 
 
 class Action:
+    HTTP_HOST = "http://localhost:8080/new_data"
+    SESSION = FuturesSession()
     SEPARATOR = ","
-    HTTP_TEMPLATE = ""
+    BLOCKING = True
 
     def __init__(self, line):
         args = line.split(self.SEPARATOR)
@@ -15,8 +19,11 @@ class Action:
     def send(self):
         data = {"x": self.x, "y": self.y, "z": self.z}
         print("Sending:", data)
-        r = requests.post("http://localhost:8080/new_data", json=data)
-        print(r.status_code)
+        if self.BLOCKING:
+            r = requests.post(self.HTTP_HOST, json=data)
+            print(r.status_code)
+        else:
+            self.SESSION.post(self.HTTP_HOST, json=data)
         time.sleep(self.t)
 
 
