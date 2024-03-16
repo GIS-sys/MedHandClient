@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import time
 import uvicorn
 
 from controller import Controller
@@ -19,7 +20,8 @@ webapp.add_middleware(
 
 @webapp.post("/new_data")
 async def new_data(data: RequestData):
-    Controller.process(data)
+    timestamp = time.time()
+    Controller.process(data, timestamp)
 
 if __name__ == "__main__":
     uvicorn.run(webapp, host="0.0.0.0", port=PORT)
