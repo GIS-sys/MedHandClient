@@ -3,3 +3,4 @@ fastapi==0.110.0
 email-validator==2.1.1
 python-multipart==0.0.9
 mouse==0.7.1
+pynput==1.7.3
