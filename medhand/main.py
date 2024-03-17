@@ -4,6 +4,7 @@ import time
 import uvicorn
 
 from controller import Controller
+from debug import Debug
 from request_data import RequestData
 
 
@@ -21,6 +22,7 @@ webapp.add_middleware(
 @webapp.post("/new_data")
 async def new_data(data: RequestData):
     timestamp = time.time()
+    Debug.process(data, timestamp)
     Controller.process(data, timestamp)
 
 if __name__ == "__main__":
