@@ -16,6 +16,8 @@ class Controller:
 
     MEMORY_SIZE = 5
     history = []
+    speed = (0, 0)
+    SPEED_DECAY_RATE = 0.1
 
     @staticmethod
     def process(data, timestamp):
@@ -49,14 +51,18 @@ class Controller:
         #    return [ActionPressRelease(pos=add(cur_mouse_pos, (data.x, data.y)), release=False, button=Action.LEFT)]
         #return [ActionScroll(pos=add(cur_mouse_pos, (data.x, data.y)), scroll=data.z)]
         #return []
-        prev_timestamp = new_timestamp
+        delta_time = 0
         if len(Controller.history) > 1:
-            prev_timestamp = Controller.history[1].timestamp
-        speed_x = int((new_data.ax * (prev_timestamp - new_timestamp))**3 * 100)
-        speed_y = int(((new_data.az - 9.81) * (prev_timestamp - new_timestamp))**3 * 100)
-        print(speed_x, speed_y)
+            delta_time = new_timestamp - Controller.history[1].timestamp
+        dspeed_x = (new_data.ax * delta_time) * 1
+        dspeed_y = ((new_data.az - 9.81) * delta_time) * 1
+        Controller.speed = (
+            (Controller.speed[0] + dspeed_x) * Controller.SPEED_DECAY_RATE**delta_time,
+            (Controller.speed[1] + dspeed_y) * Controller.SPEED_DECAY_RATE**delta_time
+        )
+        print(dspeed_x, dspeed_y, int(Controller.speed[0] * 100), int(Controller.speed[1] * 100))
         print(f"{int(new_data.ax * 100)}\t{int(new_data.ay * 100)}\t{int(new_data.az * 100)}")
-        return [ActionMove(pos=add(cur_mouse_pos, (speed_x, speed_y)))]
+        return [ActionMove(pos=add(cur_mouse_pos, Controller.speed))]
 
     @staticmethod
     def take_actions(actions):
