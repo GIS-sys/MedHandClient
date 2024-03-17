@@ -1,10 +1,12 @@
 from abc import ABC
 from pynput.mouse import Button, Controller as MouseController
 
+import config
+
 
 class Action(ABC):
     mouse = MouseController()
-    MOUSE_CLICK_DELAY = 0.01
+    MOUSE_CLICK_DELAY = config.ACTION_MOUSE_CLICK_DELAY
     RIGHT = Button.right
     LEFT = Button.left
 

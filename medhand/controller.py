@@ -1,8 +1,13 @@
 import time
 
 from action import *
-from utils import add
+import config
+from utils import add, signed_power
 
+
+MOVEMENT_SENSITIVITY = config.CONTROLLER_MOVEMENT_SENSITIVITY
+MOVEMENT_AMORTIZATION = config.CONTROLLER_MOVEMENT_AMORTIZATION
+GRAVITY = config.CONTROLLER_GRAVITY
 
 class Controller:
     class HistoryElement:
@@ -14,10 +19,9 @@ class Controller:
         def __repr__(self):
             return f"HistoryElement(data={self.data}, actions={self.actions}, timestamp={self.timestamp})"
 
-    MEMORY_SIZE = 5
+    HISTORY_SIZE = config.CONTROLLER_HISTORY_SIZE
     history = []
-    speed = (0, 0)
-    SPEED_DECAY_RATE = 0.1
+    mode = None
 
     @staticmethod
     def process(data, timestamp):
@@ -30,7 +34,7 @@ class Controller:
         try:
             Controller.take_actions(actions)
             Controller.history[0].actions = actions
-            Controller.history = Controller.history[:Controller.MEMORY_SIZE]
+            Controller.history = Controller.history[:Controller.HISTORY_SIZE]
         except:
             Controller.history = Controller.history[1:]
 
@@ -54,15 +58,11 @@ class Controller:
         delta_time = 0
         if len(Controller.history) > 1:
             delta_time = new_timestamp - Controller.history[1].timestamp
-        dspeed_x = (new_data.ax * delta_time) * 1
-        dspeed_y = ((new_data.az - 9.81) * delta_time) * 1
-        Controller.speed = (
-            (Controller.speed[0] + dspeed_x) * Controller.SPEED_DECAY_RATE**delta_time,
-            (Controller.speed[1] + dspeed_y) * Controller.SPEED_DECAY_RATE**delta_time
+        speed = (
+            -signed_power(new_data.ax / GRAVITY, MOVEMENT_AMORTIZATION) * MOVEMENT_SENSITIVITY * delta_time,
+            -signed_power(new_data.ay / GRAVITY, MOVEMENT_AMORTIZATION) * MOVEMENT_SENSITIVITY * delta_time,
         )
-        print(dspeed_x, dspeed_y, int(Controller.speed[0] * 100), int(Controller.speed[1] * 100))
-        print(f"{int(new_data.ax * 100)}\t{int(new_data.ay * 100)}\t{int(new_data.az * 100)}")
-        return [ActionMove(pos=add(cur_mouse_pos, Controller.speed))]
+        return [ActionMove(pos=add(cur_mouse_pos, speed))]
 
     @staticmethod
     def take_actions(actions):

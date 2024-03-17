@@ -3,12 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 import time
 import uvicorn
 
+import config
 from controller import Controller
 from debug import Debug
 from request_data import RequestData
 
 
-PORT = 8080
+PORT = config.MAIN_PORT
 
 webapp = FastAPI()
 webapp.add_middleware(
