@@ -1,7 +1,8 @@
-try:
-    exec("imp" + "ort matplotlib.pyplot as plt")
-except:
-    pass
+if False:
+    try:
+        exec("imp" + "ort matplotlib.pyplot as plt")
+    except:
+        pass
 
 class Debug:
     THRESHOLD = 100

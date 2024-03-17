@@ -52,8 +52,8 @@ class Controller:
         prev_timestamp = new_timestamp
         if len(Controller.history) > 1:
             prev_timestamp = Controller.history[1].timestamp
-        speed_x = int((new_data.ax * (prev_timestamp - new_timestamp))**2 * 10)
-        speed_y = int(((new_data.az - 9.81) * (prev_timestamp - new_timestamp))**2 * 10)
+        speed_x = int((new_data.ax * (prev_timestamp - new_timestamp))**3 * 100)
+        speed_y = int(((new_data.az - 9.81) * (prev_timestamp - new_timestamp))**3 * 100)
         print(speed_x, speed_y)
         print(f"{int(new_data.ax * 100)}\t{int(new_data.ay * 100)}\t{int(new_data.az * 100)}")
         return [ActionMove(pos=add(cur_mouse_pos, (speed_x, speed_y)))]
