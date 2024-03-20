@@ -4,20 +4,25 @@ import requests
 from requests_futures.sessions import FuturesSession
 import time
 
+import sys
+sys.path.append('medhand')
+import config
+
 
 class Action:
-    HTTP_HOST = "http://localhost:8080/new_data"
+    HTTP_HOST = f"http://localhost:{config.MAIN_PORT}/new_data"
     SESSION = FuturesSession()
     SEPARATOR = ","
     BLOCKING = True
 
     def __init__(self, line):
         args = line.split(self.SEPARATOR)
-        self.x, self.y, self.z = map(int, args[0:3])
-        self.t = float(args[3])
+        self.ax, self.ay, self.az = map(int, args[0:3])
+        self.gx, self.gy, self.gz = map(int, args[3:6])
+        self.t = float(args[6])
 
     def send(self):
-        data = {"x": self.x, "y": self.y, "z": self.z}
+        data = {"ax": self.ax, "ay": self.ay, "az": self.az, "gx": self.gx, "gy": self.gy, "gz": self.gz}
         print("Sending:", data)
         if self.BLOCKING:
             r = requests.post(self.HTTP_HOST, json=data)
