@@ -25,6 +25,7 @@ async def new_data(data: RequestData):
     timestamp = time.time()
     Debug.process(data, timestamp)
     Controller.process(data, timestamp)
+    return "new"
 
 @webapp.get("/{ax}/{ay}/{az}/{gx}/{gy}/{gz}")
 async def new_data(ax: float, ay: float, az: float, gx: float, gy: float, gz: float):
@@ -32,6 +33,7 @@ async def new_data(ax: float, ay: float, az: float, gx: float, gy: float, gz: fl
     data = RequestData(ax=ax, ay=ay, az=az, gx=gx, gy=gy, gz=gz)
     Debug.process(data, timestamp)
     Controller.process(data, timestamp)
+    return "new"
 
 if __name__ == "__main__":
     uvicorn.run(webapp, host="0.0.0.0", port=PORT)
