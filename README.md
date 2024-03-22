@@ -1,24 +1,39 @@
+# Stucture
+
+TODO
+
 # Run locally
 
-0) has python and pip installed
+## Prerequisites
 
-1) pip install -r requirements.txt
+- has python>=3.8 and pip3 installed
 
-2) python main.py
+## Run
 
-3) Test via:
-
+```bash
+pip install -r requirements.txt
+python medhand/main.py
 ```
-curl -X POST http://localhost:8080/position -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"x": 1, "y": 2, "z": 4}'
+
+## Test
+
+1) either bash:
+```bash
+curl -X POST http://localhost:8080/new_data -H 'accept: application/json' -H 'Content-Type: application/json' -d '{"ax": 1, "ay": 2, "az": 4, "gx": 1, "gy": 2, "gz": 4}'
 ```
-or
+
+2) or JS:
 ```
-fetch("http://localhost:8080/position", {method: "POST", body: '{"x":100,"y":2000,"z":4}', headers: {
+fetch("http://localhost:8080/new_data", {method: "POST", body: '{"ax": 1, "ay": 2, "az": 4, "gx": 1, "gy": 2, "gz": 4}', headers: {
   "Content-type": "application/json; charset=UTF-8"
 }}).then((json) => console.log(json));
 ```
 
-# Compile for windows (TODO for linux)
+Port is taken from config.py
 
-./scripts/compile.sh
+# Compile
+
+- Ubuntu: ./compilation/compile_ubuntu.sh
+
+- Windows: ./compilation/compile_wine.sh
 
